@@ -96,7 +96,7 @@ public class Banco implements ServicioClientes {
 
     @Override
     public Cliente consultarCliente(Integer numero) {
-        return clientes.stream()
+        return clientes.parallelStream()
                 .filter(cliente -> Objects.equals(cliente.getNumero(), numero))
                 .findFirst()
                 .orElse(null);
@@ -109,7 +109,7 @@ public class Banco implements ServicioClientes {
 
     @Override
     public Cliente buscarClientesPorRFC(String rfc) {
-        return clientes.stream()
+        return clientes.parallelStream()
                 .filter(cliente -> cliente.getRfc().equals(rfc))
                 .findFirst()
                 .orElse(null);

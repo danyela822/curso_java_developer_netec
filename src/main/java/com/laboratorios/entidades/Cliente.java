@@ -42,7 +42,7 @@ public class Cliente implements ServicioCuentas, Comparable<Cliente>{
 
     @Override
     public void abonarCuenta(Integer numero, Double abono) {
-        cuentas.stream()
+        cuentas.parallelStream()
                 .filter(cuenta -> Objects.equals(cuenta.getNumero(), numero))
                 .findFirst()
                 .ifPresent(cuenta -> cuenta.setSaldo(cuenta.getSaldo() + abono));
@@ -51,7 +51,7 @@ public class Cliente implements ServicioCuentas, Comparable<Cliente>{
 
     @Override
     public void retirar(Integer numero, Double retiro) {
-        cuentas.stream()
+        cuentas.parallelStream()
                 .filter(cuenta -> Objects.equals(cuenta.getNumero(), numero))
                 .findFirst()
                 .ifPresent(cuenta -> cuenta.setSaldo(cuenta.getSaldo() - retiro));
