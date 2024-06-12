@@ -2,6 +2,7 @@ package com.laboratorios.laboratorio;
 
 import com.laboratorios.entidades.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeSet;
@@ -23,9 +24,9 @@ public class Main {
         Domicilio domicilio4 = new Domicilio("Calle 4", 4, "Colonia 4", "Estado 4", 101);
 
         // ------------------------------------------------- Cliente ---------------------------------------------- //
-        Cliente cliente1 = new Cliente(4,"Juan Perez", domicilio1, "rfc 4", "Telefono 4", "fecha 4");
-        Cliente cliente2 = new Cliente(5,"Luis Lopez", domicilio2, "rfc 5", "Telefono 5", "fecha 5");
-        cliente = new Cliente(6, "Camilo Cortez", domicilio4, "rfc 6", "Telefono 6", "fecha 6");
+        Cliente cliente1 = new Cliente(4,"Juan Perez", domicilio1, "rfc 4", "Telefono 4", LocalDate.of(1990,1,1));
+        Cliente cliente2 = new Cliente(5,"Luis Lopez", domicilio2, "rfc 5", "Telefono 5", LocalDate.of(1990,2,2));
+        cliente = new Cliente(6, "Camilo Cortez", domicilio4, "rfc 6", "Telefono 6", LocalDate.of(1990,3,3));
 
         // ------------------------------------------------- Cuentas ---------------------------------------------- //
 

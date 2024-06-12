@@ -2,6 +2,7 @@ package com.laboratorios.entidades;
 
 import com.laboratorios.servicios.ServicioCuentas;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -13,9 +14,9 @@ public class Cliente implements ServicioCuentas, Comparable<Cliente>{
     private String rfc;
     private String telefono;
     private ArrayList<Cuenta> cuentas;
-    private String fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
-    public Cliente(Integer numero, String nombre, Domicilio domicilio, String rfc, String telefono, String fechaNacimiento) {
+    public Cliente(Integer numero, String nombre, Domicilio domicilio, String rfc, String telefono, LocalDate fechaNacimiento) {
         this.numero = numero;
         this.nombre = nombre;
         this.domicilio = domicilio;
@@ -114,11 +115,11 @@ public class Cliente implements ServicioCuentas, Comparable<Cliente>{
         this.cuentas = cuentas;
     }
 
-    public String getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

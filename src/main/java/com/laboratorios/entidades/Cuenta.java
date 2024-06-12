@@ -1,11 +1,13 @@
 package com.laboratorios.entidades;
 
+import java.time.LocalDate;
+
 public abstract class Cuenta implements Comparable<Cuenta>{
 
     private Integer numero;
-    private String fechaApertura;
+    private LocalDate fechaApertura;
     private Double saldo;
-    private String fechaCancelacion;
+    private LocalDate fechaCancelacion;
 
     public Cuenta(Double saldo, Integer numero) {
         this.saldo = saldo;
@@ -20,11 +22,11 @@ public abstract class Cuenta implements Comparable<Cuenta>{
         this.numero = numero;
     }
 
-    public String getFechaApertura() {
+    public LocalDate getFechaApertura() {
         return fechaApertura;
     }
 
-    public void setFechaApertura(String fechaApertura) {
+    public void setFechaApertura(LocalDate fechaApertura) {
         this.fechaApertura = fechaApertura;
     }
 
@@ -36,11 +38,11 @@ public abstract class Cuenta implements Comparable<Cuenta>{
         this.saldo = saldo;
     }
 
-    public String getFechaCancelacion() {
+    public LocalDate getFechaCancelacion() {
         return fechaCancelacion;
     }
 
-    public void setFechaCancelacion(String fechaCancelacion) {
+    public void setFechaCancelacion(LocalDate fechaCancelacion) {
         this.fechaCancelacion = fechaCancelacion;
     }
 

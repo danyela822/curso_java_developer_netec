@@ -5,6 +5,8 @@ import com.laboratorios.entidades.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,9 @@ public class Main {
         Domicilio domicilio6 = new Domicilio("Calle 6",6, "Colonia 6", "Estado 6",141);
         Domicilio domicilio7 = new Domicilio("Calle 7",7, "Colonia 7", "Estado 7",151);
 
-        Cliente cliente1 = new Cliente(1,"Cliente 1", domicilio5, "rfc 1", "Telefono 1", "fecha 1");
-        Cliente cliente2 = new Cliente(2,"Cliente 2", domicilio6, "rfc 2", "Telefono 2", "fecha 2");
-        Cliente cliente3 = new Cliente(3,"Cliente 3", domicilio7, "rfc 3", "Telefono 3", "fecha 3");
+        Cliente cliente1 = new Cliente(1,"Cliente 1", domicilio5, "rfc 1", "Telefono 1", LocalDate.of(1990,1,1));
+        Cliente cliente2 = new Cliente(2,"Cliente 2", domicilio6, "rfc 2", "Telefono 2", LocalDate.of(1990,2,2));
+        Cliente cliente3 = new Cliente(3,"Cliente 3", domicilio7, "rfc 3", "Telefono 3", LocalDate.of(1990,3,3));
 
         List<Cuenta> cuentas = crearCuentas(obtenerCuentas());
 
@@ -41,7 +43,12 @@ public class Main {
                 .map(cuentaAH -> {
                     String datos[] = cuentaAH.split(",");
                     Cuenta ca = new CuentaDeAhorro(Double.parseDouble(datos[2].trim()),Integer.parseInt(datos[4].trim()),Double.parseDouble(datos[3].trim()));
-                    ca.setFechaApertura(datos[1].trim());
+
+                    String stringFecha = datos[1].trim();
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate fechaApertura = LocalDate.parse(stringFecha,formato);
+
+                    ca.setFechaApertura(fechaApertura);
                     return ca;
                 }).toList();
 
@@ -50,7 +57,12 @@ public class Main {
                 .map(cuentaCC -> {
                     String datos[] = cuentaCC.split(",");
                     Cuenta cc = new CuentaDeCheque(Double.parseDouble(datos[2].trim()),Integer.parseInt(datos[4].trim()),Double.parseDouble(datos[3].trim()));
-                    cc.setFechaApertura(datos[1].trim());
+
+                    String stringFecha = datos[1].trim();
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate fechaApertura = LocalDate.parse(stringFecha,formato);
+
+                    cc.setFechaApertura(fechaApertura);
                     return cc;
                 }).toList();
 
