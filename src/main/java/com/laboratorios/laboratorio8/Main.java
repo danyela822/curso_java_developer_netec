@@ -12,9 +12,12 @@ import java.util.List;
 
 public class Main {
 
+    public static Banco banco;
+
     public static void main(String[] args) throws IOException {
         System.out.println("\n// ------------------------------------------ PRACTCA 8 --------------------------------------------  //");
 
+        Domicilio domicilioBanco = new Domicilio("Calle 4",4, "Colonia 4", "Estado 4",444);
         Domicilio domicilio5 = new Domicilio("Calle 5",5, "Colonia 5", "Estado 5",121);
         Domicilio domicilio6 = new Domicilio("Calle 6",6, "Colonia 6", "Estado 6",141);
         Domicilio domicilio7 = new Domicilio("Calle 7",7, "Colonia 7", "Estado 7",151);
@@ -23,54 +26,60 @@ public class Main {
         Cliente cliente2 = new Cliente(2,"Cliente 2", domicilio6, "rfc 2", "Telefono 2", LocalDate.of(1990,2,2));
         Cliente cliente3 = new Cliente(3,"Cliente 3", domicilio7, "rfc 3", "Telefono 3", LocalDate.of(1990,3,3));
 
-        List<Cuenta> cuentas = crearCuentas(obtenerCuentas());
+        banco = new Banco("Banca Electronica",domicilioBanco,"rtc 4","Telefono 4");
+        banco.getClientes().addAll(List.of(cliente1,cliente2,cliente3));
 
-        cliente1.getCuentas().addAll(cuentas.stream().filter(cuenta -> cuenta.getNumero() == 1).toList());
-        cliente2.getCuentas().addAll(cuentas.stream().filter(cuenta -> cuenta.getNumero() == 2).toList());
-        cliente3.getCuentas().addAll(cuentas.stream().filter(cuenta -> cuenta.getNumero() == 3).toList());
+        crearCuentas(obtenerCuentas());
 
-        List<Cliente> clientes = List.of(cliente1,cliente2,cliente3);
-        clientes.forEach(cliente -> {
-            System.out.println("NUMERO CLIENTE: "+cliente.getNumero());
-            cliente.getCuentas().forEach(cuenta -> System.out.println(cuenta.toString()));
+        banco.getClientes().forEach(cliente -> {
+            cliente.getCuentas().forEach(cuenta -> {
+                System.out.println("Cliente: " + cliente.getNumero() + " " + cuenta.toString());
+            });
         });
+
     }
 
-    public static List<Cuenta> crearCuentas(List<String> listaCuentas){
+    public static void crearCuentas(List<String> listaCuentas){
 
-        List<Cuenta> cuentasAhorro = listaCuentas.stream().filter(cuentaAhorro -> cuentaAhorro.startsWith("CA"))
-                .map(cuentaString -> cuentaString.substring(3,cuentaString.length()-1))
-                .map(cuentaAH -> {
-                    String datos[] = cuentaAH.split(",");
-                    Cuenta ca = new CuentaDeAhorro(Double.parseDouble(datos[2].trim()),Integer.parseInt(datos[4].trim()),Double.parseDouble(datos[3].trim()));
+        listaCuentas.stream().filter(cuentaAhorro -> cuentaAhorro.startsWith("CA"))
+            .map(cuentaString -> cuentaString.substring(3,cuentaString.length()-1))
+            .forEach(cuentaAH -> {
+                String datos[] = cuentaAH.split(",");
+                Cuenta ca = new CuentaDeAhorro(Double.parseDouble(datos[2].trim()),Integer.parseInt(datos[0].trim()),Double.parseDouble(datos[3].trim()));
 
-                    String stringFecha = datos[1].trim();
-                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    LocalDate fechaApertura = LocalDate.parse(stringFecha,formato);
+                String stringFecha = datos[1].trim();
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate fechaApertura = LocalDate.parse(stringFecha,formato);
 
-                    ca.setFechaApertura(fechaApertura);
-                    return ca;
-                }).toList();
+                ca.setFechaApertura(fechaApertura);
 
-        List<Cuenta> cuentasCheque = listaCuentas.stream().filter(cuentaCheque -> cuentaCheque.startsWith("CC"))
-                .map(cuentaString -> cuentaString.substring(3,cuentaString.length()-1))
-                .map(cuentaCC -> {
-                    String datos[] = cuentaCC.split(",");
-                    Cuenta cc = new CuentaDeCheque(Double.parseDouble(datos[2].trim()),Integer.parseInt(datos[4].trim()),Double.parseDouble(datos[3].trim()));
+                Cliente cliente = banco.consultarCliente(Integer.parseInt(datos[4].trim()));
+                if(cliente != null){
+                    cliente.getCuentas().add(ca);
+                }else {
+                    System.out.println("Cliente: " + datos[4].trim() + " no encontrado");
+                }
+            });
 
-                    String stringFecha = datos[1].trim();
-                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    LocalDate fechaApertura = LocalDate.parse(stringFecha,formato);
+        listaCuentas.stream().filter(cuentaCheque -> cuentaCheque.startsWith("CC"))
+            .map(cuentaString -> cuentaString.substring(3,cuentaString.length()-1))
+            .forEach(cuentaCC -> {
+                String datos[] = cuentaCC.split(",");
+                Cuenta cc = new CuentaDeCheque(Double.parseDouble(datos[2].trim()),Integer.parseInt(datos[0].trim()),Double.parseDouble(datos[3].trim()));
 
-                    cc.setFechaApertura(fechaApertura);
-                    return cc;
-                }).toList();
+                String stringFecha = datos[1].trim();
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate fechaApertura = LocalDate.parse(stringFecha,formato);
 
-        List<Cuenta> cuentas = new ArrayList<>();
-        cuentas.addAll(cuentasAhorro);
-        cuentas.addAll(cuentasCheque);
+                cc.setFechaApertura(fechaApertura);
 
-        return cuentas;
+                Cliente cliente = banco.consultarCliente(Integer.parseInt(datos[4].trim()));
+                if(cliente != null){
+                    cliente.getCuentas().add(cc);
+                }else {
+                    System.out.println("Cliente: " + datos[4] + " no encontrado");
+                }
+            });
     }
 
     public static List<String> obtenerCuentas() throws IOException {
